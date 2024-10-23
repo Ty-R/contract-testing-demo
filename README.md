@@ -154,20 +154,14 @@ npx pact-broker can-i-deploy --pacticipant api --branch test-demo --to-environme
 
 ## Automation
 
-Everything so far has been largely a manual effort, but this feedback loop can and should be automated.
+Everything so far in this walkthrough has been largely a manual effort, but this feedback loop can and definitely should be automated.
 
-Ideally, we would integrate this tightly with existing pipelines - contract tests would be run alongside unit and integration tests, followed by a step that publishes the contract and waits for verification.
+Ideally, we would integrate this tightly with existing pipelines:
+* Contract tests would be run alongside unit and integration tests
+* The publishing of contracts would be a step that follows the tests themselves
+* The awaiting of verification should be a step that follows the publishing
 
-We'd be aiming for two asyncronous workflows:
-
-| On consumer commit  | On provider commit |
-| ------------- | ------------- |
-| Generate and publish a new contract reflecting that consumer's commit. Once published, it will await the verification of that contract. A webhook in the broker will be setup to call upon a provider's pipeline on publish of a new consumer contract | Fetch existing consumer contracts from the broker and ensure it can still meet the expectations within them, publishing the results of a verification back to the broker  |
-
-![image](https://github.com/user-attachments/assets/9f9609c5-01ae-49ae-8a4f-5765c257ef9b)
-
-> [!IMPORTANT]  
-> TODO: Talk about deployability and pipelines
+"Waiting for verification" typically leans on the earlier-mentioned `can-i-deploy` utility, but this subject can get relatively complex, and it depends on existing development practices and delivery strategies. We may not want pipelines to fail for in-flight changes because there's no intention to actually deploy them yet, or we want to ensure that everything merged must be safe to deploy at any time. It's definitely worth reading an article on Pact's site regarding "[work in progress pacts](https://docs.pact.io/pact_broker/advanced_topics/wip_pacts)".
 
 ## Resetting
 
