@@ -42,7 +42,7 @@ describe('POST /storage/item', () => {
       .uponReceiving('a request to create an item')
       .withRequest({
         method: 'POST',
-        path: '/storage/items',
+        path: '/storage/item',
         body: {
           name: 'A new item',
           description: 'A new example item.'

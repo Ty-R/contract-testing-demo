@@ -25,7 +25,7 @@ This project has two services - an API (the consumer) and an storage service (th
 > [!NOTE]
 > Docker and Node are required. All commands are expected to be run from the project root.
 
-To set things up, we wfirst want to install dependencies which can be done by running: `npm install`
+To set things up, we first want to install dependencies which can be done by running: `npm install`
 
 ## The Pact Broker
 
@@ -33,7 +33,7 @@ The Pact broker is a middleman contract-management service that is central to th
 * Consumers `POST` contracts and `GET` verification results
 * Providers `GET` contracts and `POST` verification results
 
-To start the broker in this project, simply run: `docker-compose up` from the project root, and visit http://localhost:9292. If following along, leave the broker running for the rest of this walkthrough.
+To start the broker in this project, simply run: `docker-compose up`, and visit http://localhost:9292. If following along, leave the broker running for the rest of this walkthrough.
 
 ## Consumer Test
 
@@ -93,7 +93,7 @@ Let's introduce a mistake on the consumer side by changing the endpoint it calls
 ```
 
 ```diff
-# ./api/tests/consumer.test.js#L45
+# ./api/tests/storage-service.contract.test.js#L45
 - path: '/storage/item',
 + path: '/storage/items'
 ```
@@ -116,7 +116,7 @@ Revert the changes, and re-run the pact commands above.
 
 The examples in earlier sections have largely been comparing latest changes, but the broker is keeping a history of contracts, versions, and verifications. A new contract is published and verified on every consumer change.
 
-To reduce versioning overhead, it is common to version the contracts and verifications by commit SHA, for example - consumer commit `123` was verified by provider commit `456`. Over time, we end up with a "compatibility matrix" that we can query against to find out which service versions are compatible.
+To reduce versioning overhead, it is common to version the contracts and verifications by commit SHA, for example - consumer commit `7c14c01` was verified by provider commit `8k44a91`. Over time, we end up with a "compatibility matrix" that we can query against to find out which service versions are compatible.
 
 On top of this, the Pact Broker can also be told about environments, and we can associate a contract version with an environment.
 
@@ -137,7 +137,7 @@ npx pact-broker create-environment --name staging --display-name Staging --no-pr
 We then need to associate a contract version with the environment. This is normally a task for a deploy pipeline, but we'll do it manually for the sake of this example:
 
 ```sh
-npx pact-broker record-deployment --pacticipant auth --version 0.0.1 --environment staging --broker-base-url "http://localhost:9292"
+npx pact-broker record-deployment --pacticipant storage-service --version 0.0.1 --environment staging --broker-base-url "http://localhost:9292"
 ```
 
 ### Compatibility Matrix
@@ -163,10 +163,21 @@ Ideally, we would integrate this tightly with existing pipelines:
 
 "Waiting for verification" typically leans on the earlier-mentioned `can-i-deploy` utility, but this subject can get relatively complex, and it depends on existing development practices and delivery strategies. We may not want pipelines to fail for in-flight changes because there's no intention to actually deploy them yet, or we want to ensure that everything merged must be safe to deploy at any time. It's definitely worth reading an article on Pact's site regarding "[work in progress pacts](https://docs.pact.io/pact_broker/advanced_topics/wip_pacts)".
 
+## Want More?
+
+The walkthrough has kept things relatively simple, but feel free to make any changes on either side to get more familiar with Pact.
+
+Right now, there are only two basic contract tests covering two interactions, but there are more untested interactions in this project:
+* Updating an item
+* Deleting an item
+* Getting all items
+
+Feel free to create tests for these too, both positive and negative.
+
 ## Resetting
 
 If at any point you weant to reset the broker and the code, simply:
 
 1. Stop the broker, and run: `docker-compose down`
-2. Delete the volume: `docker volume rm contract-testing-demo_postgres-volume`
-3. Reset code changes: `git checkout -- .`
+2. Reset the broker: `docker volume rm contract-testing-demo_postgres-volume`
+3. Reset **ALL** code changes: `git checkout -- .`

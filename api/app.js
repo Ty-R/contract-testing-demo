@@ -21,7 +21,7 @@ app.get('/api/item/:id', routeWrapper(async (req, res, storageServiceUrl) => {
 }));
 
 app.post('/api/item', routeWrapper(async (req, res, storageServiceUrl) => {
-  return axios.post(`${storageServiceUrl}/storage/items`, req.body)
+  return axios.post(`${storageServiceUrl}/storage/item`, req.body)
     .then((response) => {
       res.status(201).json(response.data);
     })
