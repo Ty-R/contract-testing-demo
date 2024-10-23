@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  postgres:
+    platform: linux/x86_64
+    image: postgres
+    healthcheck:
+      test: psql postgres --command "select 1" -U postgres
+    volumes:
+      - postgres-volume:/var/lib/postgres/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  pact-broker:
+    platform: linux/x86_64
+    image: "pactfoundation/pact-broker:2.110.0-pactbroker2.107.1"
+    ports:
+      - 9292:9292
+    depends_on:
+      - postgres
+    environment:
+      PACT_BROKER_DATABASE_ADAPTER: postgres
+      PACT_BROKER_DATABASE_USERNAME: postgres
+      PACT_BROKER_DATABASE_PASSWORD: postgres
+      PACT_BROKER_DATABASE_HOST: postgres
+      PACT_BROKER_DATABASE_CONNECT_MAX_RETRIES: 5
+      PACT_BROKER_BASE_URL: http://localhost:9292
+volumes:
+  postgres-volume:

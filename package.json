@@ -1,0 +1,26 @@
+{
+  "name": "contract-testing-demo",
+  "version": "1.0.0",
+  "description": "This is a test project purely for demonstrating consumer-driven contract testing with Pact. It features two very basic services and a Pact broker.",
+  "main": "index.js",
+  "scripts": {
+    "api:start": "node api/index.js",
+    "pact:generate": "jest --verbose --detectOpenHandles ./api",
+    "pact:publish": "node -e \"require('child_process').execSync('pact-broker publish ./pacts --consumer-app-version=' + Date.now() + ' --branch=test-demo --broker-base-url=http://localhost:9292', { stdio: 'inherit' })\"",
+    "pact:verify": "jest --verbose ./storage-service"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@pact-foundation/pact": "^13.1.4",
+    "@pact-foundation/pact-cli": "^16.0.1",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
