@@ -164,6 +164,11 @@ We'd be aiming for two asyncronous workflows:
 | ------------- | ------------- |
 | Generate and publish a new contract reflecting that consumer's commit. Once published, it will await the verification of that contract. A webhook in the broker will be setup to call upon a provider's pipeline on publish of a new consumer contract | Fetch existing consumer contracts from the broker and ensure it can still meet the expectations within them, publishing the results of a verification back to the broker  |
 
+![image](https://github.com/user-attachments/assets/9f9609c5-01ae-49ae-8a4f-5765c257ef9b)
+
+> [!IMPORTANT]  
+> TODO: Talk about deployability and pipelines
+
 ## Resetting
 
 If at any point you weant to reset the broker and the code, simply:
