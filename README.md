@@ -60,7 +60,7 @@ Run the consumer's test with: `npm run pact:generate`.
 
 This will pass, and generate a JSON representation of the interaction under a newly created `pacts/` directory. At this stage, the consumer's implementation is verified, but we need to make this pact available to the provider for full verification; this is done by publishing the pact to the broker: `npm run pact:publish`.
 
-Once published, feel free to explore the broker UI.
+Once published, feel free to explore the [broker UI](http://localhost:9292).
 
 ### Provider Test
 
@@ -128,7 +128,7 @@ npm run pact:publish
 npm run pact:verify
 ```
 
-The verification will fail because the provider returns a `404`.
+The verification will fail because the provider returns a `404`; it does not recognise this route.
 
 Revert the changes, and re-run the pact commands above.
 
@@ -177,7 +177,7 @@ Ideally, we would integrate this tightly with existing pipelines:
 * The publishing of contracts would be a step that follows the tests themselves
 * The awaiting of verification should be a step that follows the publishing
 
-"Waiting for verification" typically leans on the earlier-mentioned `can-i-deploy` utility, but this subject can get relatively complex, and it depends on existing development practices and delivery strategies. We may not want pipelines to fail for in-flight changes because there's no intention to actually deploy them yet, or we want to ensure that everything merged must be safe to deploy at any time. It's definitely worth reading an article on Pact's site regarding "[work in progress pacts](https://docs.pact.io/pact_broker/advanced_topics/wip_pacts)".
+"Waiting for verification" typically leans on the earlier-mentioned `can-i-deploy` utility, but this subject can get relatively complex, and it depends on existing development practices and delivery strategies within a company. We may not want pipelines to fail for in-flight changes because there's no intention to actually deploy them yet, or we want to ensure that everything merged must be safe to deploy at any time. It's definitely worth reading an article on Pact's site regarding "[work in progress pacts](https://docs.pact.io/pact_broker/advanced_topics/wip_pacts)".
 
 ## Want More?
 
