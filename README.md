@@ -21,7 +21,9 @@ Everything in this project is offline, and can easily be reset, so please feel f
 
 In short, contract testing ensures two services can communicate with each other by forcing them to agree on the content and format of the data they exchange. This is achieved, with Pact, by establishing a feedback loop between a consumer service and provider service with a contract management service in the middle:
 
-image
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e36a2512-e1f0-4784-aa8f-3ff9488a906e" width="500" >
+</p>
 
 Consumer teams define expected interactions (e.g. the requests they expect to be able to make, and responses they expect to get back). During this process, they verify their side of the contract (request), then publish the contract to the broker for provider verification (response).
 
